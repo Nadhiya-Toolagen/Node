@@ -7,7 +7,7 @@ const path = require('path');
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, 'angular')));
+app.use(express.static(path.join(__dirname, 'dist')));
 
 // Azure SQL Server configuration
 const config = {
