@@ -114,6 +114,12 @@ app.delete('/api/items/:id', async (req, res) => {
   
 
 // Start the server
-app.listen(3000, () => {
-  console.log('Server listening on port 3000');
+
+
+const PORT = process.env.PORT || 3000; // Use the assigned port or a default port of your choice
+
+// Your server configuration and routes
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
