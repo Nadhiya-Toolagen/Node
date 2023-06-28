@@ -1,0 +1,61 @@
+name: Azure App Service CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  backend-build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install backend dependencies
+      run:  npm install
+
+    - name: Deploy backend to Azure App Service
+      uses: Azure/webapps-deploy@v2
+      with:
+        app-name: timeshetapplication
+        slot-name: production
+        publish-profile: ${{ secrets.AZURE_BACKEND_APP_PUBLISH_PROFILE }}
+        package: ./backend
+
+  frontend-build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install frontend dependencies
+      run: cd angular-crud-app && npm install
+
+    - name: Build Angular project
+      run: cd angular-crud-app && npm run build --prod
+
+    - name: Archive artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: app
+
+    - name: Deploy frontend to Azure App Service
+      uses: Azure/webapps-deploy@v2
+      with:
+        app-name: timesheetappui
+        publish-profile: ${{ secrets.AZURE_FRONTEND_APP_PUBLISH_PROFILE }}
+        package: ./app
+
