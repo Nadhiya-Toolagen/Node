@@ -2,11 +2,12 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const sql = require('mssql');
-
+const path = require('path');
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, 'angular')));
 
 // Azure SQL Server configuration
 const config = {
